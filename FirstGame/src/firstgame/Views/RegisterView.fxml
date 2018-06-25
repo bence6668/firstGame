@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="568.0" prefWidth="365.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="firstgame.Controllers.RegisterViewController">
+     <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#006bd0" height="633.0" stroke="BLACK" strokeType="INSIDE" width="371.0" />
+      <TextField fx:id="txtUname" layoutX="87.0" layoutY="348.0" prefHeight="25.0" prefWidth="197.0" />
+      <TextField fx:id="txtPass1" layoutX="87.0" layoutY="417.0" prefHeight="25.0" prefWidth="197.0" />
+      <Label id="lblName" fx:id="lblUname" layoutX="88.0" layoutY="321.0" prefHeight="27.0" prefWidth="149.0" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label id="lblPass" fx:id="lblPass" layoutX="88.0" layoutY="389.0" prefHeight="27.0" prefWidth="149.0" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Button id="logBtn" fx:id="logBtn" layoutX="190.0" layoutY="584.0" mnemonicParsing="false" onAction="#openLogWindow" prefHeight="35.0" prefWidth="95.0" style="-fx-background-color: #006bd0; -fx-border-color: white;" text="Log-in" textFill="WHITE">
+         <font>
+            <Font size="13.0" />
+         </font></Button>
+      <Button id="regBtn" fx:id="regBtn" layoutX="87.0" layoutY="584.0" mnemonicParsing="false" onAction="#register" prefHeight="35.0" prefWidth="95.0" style="-fx-background-color: #006bd0; -fx-border-color: white;" text="Register" textFill="WHITE">
+         <font>
+            <Font size="13.0" />
+         </font></Button>
+      <ImageView fitHeight="87.0" fitWidth="86.0" layoutX="139.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/user.png" />
+         </image>
+      </ImageView>
+      <Label id="lblName" fx:id="lblAccount" layoutX="13.0" layoutY="14.0" prefHeight="27.0" prefWidth="149.0" text="Creating Account" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtName2" layoutX="88.0" layoutY="224.0" prefHeight="25.0" prefWidth="197.0" />
+      <TextField fx:id="txtName1" layoutX="88.0" layoutY="161.0" prefHeight="25.0" prefWidth="197.0" />
+      <TextField fx:id="txtMail" layoutX="88.0" layoutY="285.0" prefHeight="25.0" prefWidth="197.0" />
+      <Label id="lblName" fx:id="lblName1" layoutX="88.0" layoutY="134.0" prefHeight="27.0" prefWidth="149.0" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label id="lblName" fx:id="lblName2" layoutX="88.0" layoutY="197.0" prefHeight="27.0" prefWidth="149.0" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label id="lblName" fx:id="lblName211" layoutX="88.0" layoutY="258.0" prefHeight="27.0" prefWidth="149.0" text="E-mail:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtPass2" layoutX="88.0" layoutY="483.0" prefHeight="25.0" prefWidth="197.0" />
+      <Label id="lblPass" fx:id="lblPass2" layoutX="88.0" layoutY="456.0" prefHeight="27.0" prefWidth="217.0" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblAlert" layoutX="31.0" layoutY="526.0" prefHeight="27.0" prefWidth="303.0" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
