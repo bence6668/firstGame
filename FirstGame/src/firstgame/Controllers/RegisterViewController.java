@@ -1,5 +1,6 @@
 package firstgame.Controllers;
 
+import firstgame.DatabaseConnection;
 import firstgame.LanguagePack;
 import firstgame.MainApp;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class RegisterViewController implements Initializable {
@@ -52,13 +54,15 @@ public class RegisterViewController implements Initializable {
     @FXML
     private Label lblAlert;
 
-    LanguagePack langPack;
+    private LanguagePack langPack;
     private ResourceBundle resBoundle;
     private Locale locale;
+    private DatabaseConnection db;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         langPack = LanguagePack.getInstance();
+        db = DatabaseConnection.getInstance();
         switch (langPack.getLanguage()) {
             case "ENG":
                 loadLanguage("en");
@@ -103,6 +107,54 @@ public class RegisterViewController implements Initializable {
 
     @FXML
     private void register(ActionEvent event) {
+        if (txtName1.getText().equals("") || txtName2.getText().equals("") || txtMail.getText().equals("") || txtUname.getText().equals("") || txtPass1.getText().equals("")) {
+            lblAlert.setText(resBoundle.getString("fieldcheck"));
+        } else if (!txtPass1.getText().equals(txtPass2.getText())) {
+            lblAlert.setText(resBoundle.getString("passmatch"));
+        } else {
+            db.addUser(txtName1.getText(), txtName2.getText(), txtMail.getText(), txtUname.getText(), txtPass1.getText());
+            lblAlert.setText(resBoundle.getString("successfull"));
+            freezeWindow();
+        }
+
+    }
+    
+    private void freezeWindow(){
+        txtName1.setMouseTransparent(true);
+        txtName2.setMouseTransparent(true);
+        txtPass1.setMouseTransparent(true);
+        txtPass2.setMouseTransparent(true);
+        txtMail.setMouseTransparent(true);
+        txtUname.setMouseTransparent(true);
+        regBtn.setMouseTransparent(true);
+    }
+
+    @FXML
+    private void checkStrength(MouseEvent event) {
+        if (txtPass1.getText().equals("")) {
+
+        } else {
+            if (txtPass1.getLength() < 8) {
+                lblAlert.setText(resBoundle.getString("strength"));
+            } else {
+                lblAlert.setText("");
+            }
+        }
+
+    }
+
+    @FXML
+    private void checkEmail(MouseEvent event) {
+        if (txtMail.getText().equals("")) {
+
+        } else {
+            if (!txtMail.getText().contains("@") || !txtMail.getText().contains(".")) {
+                lblAlert.setText(resBoundle.getString("mailcheck"));
+            } else {
+                lblAlert.setText("");
+            }
+        }
+
     }
 
 }

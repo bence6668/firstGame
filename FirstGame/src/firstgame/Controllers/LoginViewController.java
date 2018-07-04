@@ -1,7 +1,9 @@
 package firstgame.Controllers;
 
+import firstgame.DatabaseConnection;
 import firstgame.LanguagePack;
 import firstgame.MainApp;
+import firstgame.Player;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
@@ -38,14 +40,19 @@ public class LoginViewController implements Initializable {
     private Button regBtn;
     @FXML
     private ComboBox<String> langBox;
-
+    private DatabaseConnection db;
+    private Player player;
     private ResourceBundle resBoundle;
     private Locale locale;
     private final ObservableList<String> languages = FXCollections.observableArrayList("ENG", "HUN", "DEU");
     private final LanguagePack language = LanguagePack.getInstance();
+    @FXML
+    private Label alertLbl;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        player = Player.getInstance();
+        db = DatabaseConnection.getInstance();
         loadLanguage("en");
         langBox.setItems(languages);
         langBox.valueProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
@@ -78,6 +85,7 @@ public class LoginViewController implements Initializable {
             }
 
         });
+        
     }
 
     private void loadLanguage(String lang) {
@@ -108,6 +116,31 @@ public class LoginViewController implements Initializable {
 
     @FXML
     private void login(ActionEvent event) throws IOException {
+        boolean isValid = false;
+        if (txtUname.getText().equals("") || txtPassw.getText().equals("")) {
+            alertLbl.setText(resBoundle.getString("empty"));
+        } else {
+            isValid = db.authenticateUser(txtUname.getText(), txtPassw.getText());
+            if (isValid) {
+                if (langBox.getSelectionModel().getSelectedItem() != null) {
+                    language.setLanguage(langBox.getSelectionModel().getSelectedItem());
+                } else {
+                    language.setLanguage("en");
+                }
+                player.setBenutzername(txtUname.getText());
+                player.setGuthaben(db.getGuthaben(txtUname.getText()));
+                Stage stage = MainApp.getStage();
+                Parent root = FXMLLoader.load(getClass().getResource("/firstgame/Views/Baccara.fxml"));
+
+                Scene scene = new Scene(root);
+
+                stage.setScene(scene);
+                stage.show();
+
+            } else {
+                alertLbl.setText(resBoundle.getString("invalid"));
+            }
+        }
 
     }
 

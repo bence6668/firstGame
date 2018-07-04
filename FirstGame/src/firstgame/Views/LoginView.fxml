@@ -39,5 +39,10 @@
             <Image url="@../../resources/images/user.png" />
          </image>
       </ImageView>
+      <Label id="lblName" fx:id="alertLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="296.0" prefHeight="27.0" prefWidth="349.0" textAlignment="CENTER" textFill="YELLOW">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

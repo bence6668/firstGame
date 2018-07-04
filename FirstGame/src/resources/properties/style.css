@@ -1,0 +1,46 @@
+
+.buttton{
+  -fx-background-color: #870E17;
+  -fx-border-color: white;
+  -fx-border-width: 2,2,2,2;
+  -fx-border-radius: 2;
+
+}
+
+#janeinbutton{
+   -fx-background-color: green;
+   -fx-background-radius: 5;
+   -fx-border-color: white;
+   -fx-border-width: 2,2,2,2;
+   -fx-border-radius: 2;
+}
+
+.label{
+   -fx-background-color: rgba(0, 100, 100, 0.5);
+   -fx-background-radius: 5; 
+   -fx-border-color: white;
+   -fx-border-width: 2,2,2,2;
+   -fx-border-radius: 2;
+   -fx-text-fill:white ;
+    
+}
+
+#zuruck{
+    -fx-background-color: rgba(0, 100, 100, 0.5);
+   -fx-background-radius: 5; 
+    
+}
+
+#setzen{
+    -fx-background-color: rgba(0, 100, 100, 0.5);
+    -fx-background-radius: 5; 
+    
+}
+
+.text-area {
+    text-area-background:  #A3111C ;
+}
+
+.text-area .content {
+    -fx-background-color: text-area-background ;
+}

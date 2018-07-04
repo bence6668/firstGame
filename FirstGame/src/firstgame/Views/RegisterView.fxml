@@ -12,7 +12,7 @@
 <AnchorPane id="AnchorPane" prefHeight="568.0" prefWidth="365.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="firstgame.Controllers.RegisterViewController">
      <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#006bd0" height="633.0" stroke="BLACK" strokeType="INSIDE" width="371.0" />
-      <TextField fx:id="txtUname" layoutX="87.0" layoutY="348.0" prefHeight="25.0" prefWidth="197.0" />
+      <TextField fx:id="txtUname" layoutX="87.0" layoutY="348.0" onMouseClicked="#checkEmail" prefHeight="25.0" prefWidth="197.0" />
       <TextField fx:id="txtPass1" layoutX="87.0" layoutY="417.0" prefHeight="25.0" prefWidth="197.0" />
       <Label id="lblName" fx:id="lblUname" layoutX="88.0" layoutY="321.0" prefHeight="27.0" prefWidth="149.0" textFill="WHITE">
          <font>
@@ -60,15 +60,15 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="txtPass2" layoutX="88.0" layoutY="483.0" prefHeight="25.0" prefWidth="197.0" />
+      <TextField fx:id="txtPass2" layoutX="88.0" layoutY="483.0" onMouseClicked="#checkStrength" prefHeight="25.0" prefWidth="197.0" />
       <Label id="lblPass" fx:id="lblPass2" layoutX="88.0" layoutY="456.0" prefHeight="27.0" prefWidth="217.0" textFill="WHITE">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="lblAlert" layoutX="31.0" layoutY="526.0" prefHeight="27.0" prefWidth="303.0" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="lblAlert" alignment="CENTER" contentDisplay="CENTER" layoutX="31.0" layoutY="526.0" prefHeight="27.0" prefWidth="303.0" textAlignment="CENTER" textFill="YELLOW">
          <font>
-            <Font name="System Bold" size="18.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Label>
    </children>
