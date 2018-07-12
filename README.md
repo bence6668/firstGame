@@ -11,6 +11,6 @@ HAVE FUN!
 This JAVA project uses a mysql database called 'multilanguage', so if you want to run the program you should create first the database with the 'database.sql' file. I created the database at the 'localhost', so if you want to create the database at another host you should modify the class 'DatabaseConnection'.
 
 # Made with
--Netbeans
--Scenebuilder
+ Netbeans
+ Scenebuilder
 
