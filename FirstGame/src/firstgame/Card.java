@@ -1,17 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package firstgame;
 
-/**
- *
- * @author Bence
- */
 public class Card {
 
-    //<editor-fold defaultstate="collapsed" desc="Variablen">
+    //<editor-fold defaultstate="collapsed" desc="Variables">
     private String name;
     private String type;
     private int value;
@@ -23,7 +14,7 @@ public class Card {
         this.type = type;
     }
 
-    //<editor-fold defaultstate="collapsed" desc="Getter Methoden">
+    //<editor-fold defaultstate="collapsed" desc="getter-methods">
     public String getName() {
         return name;
     }
@@ -37,7 +28,7 @@ public class Card {
     }
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Setter Methoden">
+    //<editor-fold defaultstate="collapsed" desc="setter-methods">
     public void setName(String name) {
         this.name = name;
     }

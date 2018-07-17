@@ -1,22 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package firstgame;
 
 import java.util.ArrayList;
 import javafx.scene.image.Image;
 
-/**
- *
- * @author Bence
- */
 public class BaccaraModel {
-
-    //<editor-fold defaultstate="collapsed" desc="Klassenobjekte">
-    private Deck deckClass;
-//</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Variablen">
     private ArrayList<Card> deck;
     private ArrayList<Image> images = new ArrayList<>();
@@ -24,27 +11,26 @@ public class BaccaraModel {
     private int sumOfPlayerCards;
     private int sumOfBankerCards;
     private int thirdPlayerCard;
-    private int betrag = 0;
+    private int bet = 0;
     private int winner;
     private boolean isPlayerBet;
     private boolean isBankerBet;
     private boolean isTieBet;
+    private Deck deckClass;
 //</editor-fold>
-
+    //Contructor
     public BaccaraModel() {
         deckClass = new Deck();
         deck = deckClass.getDeck();
     }
-
-    //Die Karten werden gezogen und als Bilder ersetzt und ihre Wert wird gleichzeitig berechnet
-    public void zieheKarte(int i) {
+    //The cards will be drawn, they will be with images replaced, and the value of the card will be calculated
+    public void drawCard(int i) {
         images.add(new Image(getClass().getResourceAsStream("/resources/images/" + deck.get(i).getName() + deck.get(i).getType() + ".png")));
         cardValues.add(deck.get(i).getValue());
         cardValues.set(i, calculaateCardValue(cardValues.get(i)));
         deck.remove(i);
     }
-
-    //Hier wird überprüft ob der BANKER eine neue Karte ziehen muss
+    //Check if the BANKER needs a new card or not
     public boolean isnewBankerCard() {
         if (sumOfBankerCards < 3) {
             return true;
@@ -62,8 +48,7 @@ public class BaccaraModel {
             return false;
         }
     }
-
-    //HIer wird überprüft ob der Spieler eine neue Karte ziehen muss
+     //Check if the PLAYER needs a new card or not
     public boolean isNewPlayerCard() {
         if (getSumOfPlayerCards() < 6) {
             return true;
@@ -71,8 +56,7 @@ public class BaccaraModel {
             return false;
         }
     }
-
-    //Der Wert der Karten wird berechnet
+    //The value of the card will be calculated 
     private int calculaateCardValue(int value) {
         int newValue = 0;
 
@@ -84,7 +68,7 @@ public class BaccaraModel {
         return newValue;
     }
 
-    //Die Summe der Karten wird berechnet
+    //The sum of the cards will be calculated 
     public void calculateCardSum() {
         sumOfPlayerCards += cardValues.get(0) + cardValues.get(1);
         sumOfBankerCards += cardValues.get(2) + cardValues.get(3);
@@ -96,16 +80,14 @@ public class BaccaraModel {
         }
 
     }
-
-    //Die dritte Karte des Dealers wird zu der Summe der Karten addiert
+    //The third card's value of the BANKER will be added to the sum 
     public void addBankerToSum(int i) {
         sumOfBankerCards += cardValues.get(i);
         if (sumOfBankerCards > 9) {
             sumOfBankerCards -= 10;
         }
     }
-
-    //Die dritte Karte des Spielers wird zu der Summe der Karten addiert
+    //The third card's value of the PLAYER will be added to the sum 
     public void addPlayerToSum(int i) {
         thirdPlayerCard = cardValues.get(i);
         sumOfPlayerCards += thirdPlayerCard;
@@ -113,19 +95,17 @@ public class BaccaraModel {
             sumOfPlayerCards -= 10;
         }
     }
-
-    //Bei verschiedener Fälle wird das Betrag berechnet 
+    
     public int calculateBet() {
 
         if (sumOfPlayerCards == 9) {
-            betrag *= 1.5;
+            bet *= 1.5;
         } else {
-            betrag *= 2;
+            bet *= 2;
         }
-        return betrag;
+        return bet;
     }
 
-    //Hier wird überprüft ob der PLAYER, BANKER gewonnen hat, oder ist das Spiel UNENTSCHIEDEN
     public void whoIsWinner() {
         if (sumOfPlayerCards > sumOfBankerCards) {
             winner = 1;
@@ -136,7 +116,7 @@ public class BaccaraModel {
         }
     }
 
-    //Hier wird überprüft, ob der Spielerbetrag auf dem Feld gesetzt wurde, der gewonnen hat 
+    //Check if the bet was placed to the winner field or not
     public boolean winOrLoose() {
         if (winner == 1 && isPlayerBet == true) {
             return true;
@@ -149,9 +129,9 @@ public class BaccaraModel {
         }
     }
 
-    //<editor-fold defaultstate="collapsed" desc="Setter-Methoden">
-    public void setBetrag(int betrag) {
-        this.betrag = betrag;
+    //<editor-fold defaultstate="collapsed" desc="getter-methods">
+    public void setBet(int bet) {
+        this.bet = bet;
     }
 
     public void setIsPlayerBet(boolean isPlayerBet) {
@@ -166,7 +146,7 @@ public class BaccaraModel {
         this.isTieBet = isTieBet;
     }
 //</editor-fold>
-    //<editor-fold defaultstate="collapsed" desc="Getter-Methoden">
+    //<editor-fold defaultstate="collapsed" desc="setter-methods">
 
     public ArrayList<Integer> getCardValues() {
         return cardValues;
@@ -200,8 +180,8 @@ public class BaccaraModel {
         return winner;
     }
 
-    public int getBetrag() {
-        return betrag;
+    public int getBet() {
+        return bet;
     }
 
 //</editor-fold>   

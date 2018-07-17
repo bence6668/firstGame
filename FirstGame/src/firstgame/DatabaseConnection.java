@@ -1,4 +1,5 @@
 package firstgame;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -15,18 +16,36 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 public class DatabaseConnection {
+  
+    //<editor-fold defaultstate="collapsed" desc="Variables">
     private boolean isConnected=true;
     private static final Random RANDOM = new SecureRandom();
     private static final int ITERATIONS = 10000;
     private static final int KEY_LENGTH = 256;
+    private static DatabaseConnection instance;
+    private Connection connection;
+    private Statement statement;
+    private final String LINK = "jdbc:mysql://localhost:3306/multilanguage";
+    private final String UNAME = "root";
+    private final String PASSW = "";
+//</editor-fold>
+    //Constructor
+    private DatabaseConnection() {
+        try {
+            connection = DriverManager.getConnection(LINK, UNAME, PASSW);
+            statement=connection.createStatement();
+            
+        } catch (SQLException ex) {
+            isConnected=false;
+        }
+    }
     
     public static byte[] getNextSalt() {
         byte[] salt = new byte[16];
         RANDOM.nextBytes(salt);
         return salt;
     }
-    
-    
+       
     public static byte[] hashPassword(char[] password, byte[] salt) {
         
         PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
@@ -71,34 +90,6 @@ public class DatabaseConnection {
         System.out.println(b);
     }
     
-    private static DatabaseConnection instance;
-
-    private Connection connection;
-    private Statement statement;
-
-    private DatabaseConnection() {
-        try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/multilanguage", "root", "");
-            statement=connection.createStatement();
-            
-        } catch (SQLException ex) {
-            isConnected=false;
-        }
-    }
-
-    public static DatabaseConnection getInstance() {
-        try{
-        if (instance == null) {
-            instance = new DatabaseConnection();
-        }
-        }catch(Exception ex){
-        
-        }
-        
-        return instance;
-    }
-
-
     public boolean addUser(String name, String surname, String email, String username, String password) {
         byte[] salt = getNextSalt();
         byte[] hash = hashPassword(password.toCharArray(), salt);
@@ -196,7 +187,7 @@ public class DatabaseConnection {
         return 0;
     }
     
-     public int getGuthaben(String username) {
+     public int getBalance(String username) {
         int id = getUID(username); 
         String query = "SELECT * FROM user WHERE userID LIKE ?";
 
@@ -225,13 +216,13 @@ public class DatabaseConnection {
         return 0;
     }
     
-    public void updateGuthaben(int guthaben, String username){
+    public void updateBalance(int balance, String username){
         int id = getUID(username);
          String sql = "UPDATE `user` SET `guthaben` = ? WHERE `userID`= ?";
           PreparedStatement pst;
         try {
             pst = connection.prepareStatement(sql);
-            pst.setInt(1, guthaben);
+            pst.setInt(1, balance);
             pst.setInt(2, id);
             pst.execute();
         } catch (SQLException ex) {
@@ -240,10 +231,21 @@ public class DatabaseConnection {
            
     }
 
+    //<editor-fold defaultstate="collapsed" desc="getter-methods">
+    public static DatabaseConnection getInstance() {
+        try{
+            if (instance == null) {
+                instance = new DatabaseConnection();
+            }
+        }catch(Exception ex){
+            
+        }
+        
+        return instance;
+    }
+    
     public boolean getIsConnected() {
         return isConnected;
     }
-    
-    
-    
+//</editor-fold>
 }
