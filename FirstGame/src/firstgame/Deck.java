@@ -11,10 +11,12 @@ public class Deck {
     private ArrayList<Card> deck = new ArrayList<>();
 //</editor-fold>
     //The deck will be created and mixed
+
     public Deck() {
         createCardList();
         Collections.shuffle(deck);
     }
+
     //The 52 cards will be added to the deck
     private void createCardList() {
         for (int i = 0; i < TYPE.length; i++) {
@@ -23,6 +25,7 @@ public class Deck {
             }
         }
     }
+
     //getter-methods
     public ArrayList<Card> getDeck() {
         return deck;

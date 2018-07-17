@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 
 public class LoginViewController implements Initializable {
 
+//<editor-fold defaultstate="collapsed" desc="FXML-Items">
     @FXML
     private TextField txtUname;
     @FXML
@@ -40,14 +41,16 @@ public class LoginViewController implements Initializable {
     private Button regBtn;
     @FXML
     private ComboBox<String> langBox;
+    @FXML
+    private Label alertLbl;
+//</editor-fold>
+
     private DatabaseConnection db;
     private Player player;
-    private ResourceBundle resBoundle;
+    private ResourceBundle resBundle;
     private Locale locale;
     private final ObservableList<String> languages = FXCollections.observableArrayList("ENG", "HUN", "DEU");
     private final LanguagePack language = LanguagePack.getInstance();
-    @FXML
-    private Label alertLbl;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -85,16 +88,16 @@ public class LoginViewController implements Initializable {
             }
 
         });
-        
+
     }
 
     private void loadLanguage(String lang) {
         locale = new Locale(lang);
-        resBoundle = ResourceBundle.getBundle("resources.properties.language", locale);
-        lblName.setText(resBoundle.getString("username"));
-        lblPass.setText(resBoundle.getString("password"));
-        logBtn.setText(resBoundle.getString("log"));
-        regBtn.setText(resBoundle.getString("reg"));
+        resBundle = ResourceBundle.getBundle("resources.properties.language", locale);
+        lblName.setText(resBundle.getString("username"));
+        lblPass.setText(resBundle.getString("password"));
+        logBtn.setText(resBundle.getString("log"));
+        regBtn.setText(resBundle.getString("reg"));
     }
 
     @FXML
@@ -118,7 +121,7 @@ public class LoginViewController implements Initializable {
     private void login(ActionEvent event) throws IOException {
         boolean isValid = false;
         if (txtUname.getText().equals("") || txtPassw.getText().equals("")) {
-            alertLbl.setText(resBoundle.getString("empty"));
+            alertLbl.setText(resBundle.getString("empty"));
         } else {
             isValid = db.authenticateUser(txtUname.getText(), txtPassw.getText());
             if (isValid) {
@@ -127,8 +130,8 @@ public class LoginViewController implements Initializable {
                 } else {
                     language.setLanguage("en");
                 }
-                player.setBenutzername(txtUname.getText());
-                player.setGuthaben(db.getGuthaben(txtUname.getText()));
+                player.setUsername(txtUname.getText());
+                player.setBalance(db.getBalance(txtUname.getText()));
                 Stage stage = MainApp.getStage();
                 Parent root = FXMLLoader.load(getClass().getResource("/firstgame/Views/Baccara.fxml"));
 
@@ -138,7 +141,7 @@ public class LoginViewController implements Initializable {
                 stage.show();
 
             } else {
-                alertLbl.setText(resBoundle.getString("invalid"));
+                alertLbl.setText(resBundle.getString("invalid"));
             }
         }
 

@@ -16,9 +16,9 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 public class DatabaseConnection {
-  
+
     //<editor-fold defaultstate="collapsed" desc="Variables">
-    private boolean isConnected=true;
+    private boolean isConnected = true;
     private static final Random RANDOM = new SecureRandom();
     private static final int ITERATIONS = 10000;
     private static final int KEY_LENGTH = 256;
@@ -30,66 +30,66 @@ public class DatabaseConnection {
     private final String PASSW = "";
 //</editor-fold>
     //Constructor
+
     private DatabaseConnection() {
         try {
             connection = DriverManager.getConnection(LINK, UNAME, PASSW);
-            statement=connection.createStatement();
-            
+            statement = connection.createStatement();
+
         } catch (SQLException ex) {
-            isConnected=false;
+            isConnected = false;
         }
     }
-    
+
     public static byte[] getNextSalt() {
         byte[] salt = new byte[16];
         RANDOM.nextBytes(salt);
         return salt;
     }
-       
+
     public static byte[] hashPassword(char[] password, byte[] salt) {
-        
+
         PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
-        
+
         try {
-        
+
             SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             byte[] hash = f.generateSecret(spec).getEncoded();
-            
+
             return hash;
-        
+
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             System.out.println(e);
         }
-        
+
         return null;
 
     }
-    
+
     public static boolean checkPassword(char[] password, byte[] salt, byte[] expectedHash) {
-        
-        if(password == null || salt == null) {
+
+        if (password == null || salt == null) {
             return false;
         }
-        
+
         byte[] pwdHash = hashPassword(password, salt);
-        
+
         for (int i = 0; i < expectedHash.length; i++) {
             if (pwdHash[i] != expectedHash[i]) {
                 return false;
             }
         }
-                
+
         return true;
     }
-    
-    
+
     public static void testPWHash() throws InvalidKeySpecException, NoSuchAlgorithmException {
         byte[] salt = getNextSalt();
         byte[] hashPassword = hashPassword("test".toCharArray(), salt);
         boolean b = checkPassword("test".toCharArray(), salt, hashPassword);
         System.out.println(b);
     }
-    
+
     public boolean addUser(String name, String surname, String email, String username, String password) {
         byte[] salt = getNextSalt();
         byte[] hash = hashPassword(password.toCharArray(), salt);
@@ -158,7 +158,6 @@ public class DatabaseConnection {
         }
     }
 
-    
     public int getUID(String username) {
         String query = "SELECT * FROM user WHERE username LIKE ?";
 
@@ -186,9 +185,9 @@ public class DatabaseConnection {
         }
         return 0;
     }
-    
-     public int getBalance(String username) {
-        int id = getUID(username); 
+
+    public int getBalance(String username) {
+        int id = getUID(username);
         String query = "SELECT * FROM user WHERE userID LIKE ?";
 
         try {
@@ -215,11 +214,11 @@ public class DatabaseConnection {
         }
         return 0;
     }
-    
-    public void updateBalance(int balance, String username){
+
+    public void updateBalance(int balance, String username) {
         int id = getUID(username);
-         String sql = "UPDATE `user` SET `guthaben` = ? WHERE `userID`= ?";
-          PreparedStatement pst;
+        String sql = "UPDATE `user` SET `guthaben` = ? WHERE `userID`= ?";
+        PreparedStatement pst;
         try {
             pst = connection.prepareStatement(sql);
             pst.setInt(1, balance);
@@ -228,22 +227,22 @@ public class DatabaseConnection {
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
-           
+
     }
 
     //<editor-fold defaultstate="collapsed" desc="getter-methods">
     public static DatabaseConnection getInstance() {
-        try{
+        try {
             if (instance == null) {
                 instance = new DatabaseConnection();
             }
-        }catch(Exception ex){
-            
+        } catch (Exception ex) {
+
         }
-        
+
         return instance;
     }
-    
+
     public boolean getIsConnected() {
         return isConnected;
     }

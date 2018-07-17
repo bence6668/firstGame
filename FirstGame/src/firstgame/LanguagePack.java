@@ -1,9 +1,11 @@
 package firstgame;
 
 public class LanguagePack {
+
     //Variables
     private String language;
     private static LanguagePack instance;
+
     //Constructor
     private LanguagePack() {
 
@@ -13,7 +15,7 @@ public class LanguagePack {
     public String getLanguage() {
         return language;
     }
-    
+
     public static LanguagePack getInstance() {
         if (instance == null) {
             instance = new LanguagePack();
@@ -22,6 +24,7 @@ public class LanguagePack {
     }
 //</editor-fold>
     //setter-method
+
     public void setLanguage(String language) {
         this.language = language;
     }

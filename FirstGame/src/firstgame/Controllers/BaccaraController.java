@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package firstgame.Controllers;
 
-//<editor-fold defaultstate="collapsed" desc="imports">
 import firstgame.BaccaraModel;
 import firstgame.DatabaseConnection;
 import firstgame.LanguagePack;
@@ -30,35 +24,28 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-//</editor-fold>
 
-/**
- * FXML Controller class
- *
- * @author Bence Urszin
- */
 public class BaccaraController implements Initializable {
 
-    //<editor-fold defaultstate="collapsed" desc="Variablen">
+    //<editor-fold defaultstate="collapsed" desc="Variables">
     private ArrayList<Image> images;
-    private String benutzername;
+    private String username;
     private boolean isBetLost;
     private boolean isNewBankerCardNeeded;
     private boolean isNewPlayerCardNeeded;
     private boolean isfirstClick = true;
     private boolean isInfoVisible;
-    private int guthaben;
-    private int betrag;
+    private int balance;
+    private int bet;
     private Locale locale;
-    private ResourceBundle resBoundle;
-//</editor-fold>
-//<editor-fold defaultstate="collapsed" desc="Klassenobjekte">
+    private ResourceBundle resBundle;
     private Player player;
     private DatabaseConnection db;
     private BaccaraModel model;
     private LanguagePack langPack;
 //</editor-fold>
-    //<editor-fold defaultstate="collapsed" desc="FXML Elemente">
+
+    //<editor-fold defaultstate="collapsed" desc="FXML-items">
     @FXML
     private AnchorPane alertPane;
     @FXML
@@ -81,7 +68,6 @@ public class BaccaraController implements Initializable {
     private ImageView infoImg1, infoImg2, infoImg3, infoImg4, infoImg5;
     @FXML
     private Button setzenBtn, zieheBtn, newPlayerCardBtn, newBankerCardBtn, newGameBtn, betBankerBtn, betTieBtn, betPlayerBtn;
-//</editor-fold>
     @FXML
     private Button zuruck;
     @FXML
@@ -94,21 +80,16 @@ public class BaccaraController implements Initializable {
     private Button jaButton;
     @FXML
     private Button neinButton;
+//</editor-fold>
 
-    /**
-     * Beim Start des Spiels wird Benutzername und Kontostand aus der Klasse
-     * Player abgeftragt und angezeigt und der Kartendeck aus der KLasse Deck
-     * abgefragt.
-     *
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         db = DatabaseConnection.getInstance();
         player = Player.getInstance();
         model = new BaccaraModel();
 
-        benutzername = player.getBenutzername();
-        guthaben = player.getGuthaben();
+        username = player.getUsername();
+        balance = player.getBalance();
         langPack = LanguagePack.getInstance();
         switch (langPack.getLanguage()) {
             case "ENG":
@@ -124,10 +105,10 @@ public class BaccaraController implements Initializable {
                 loadLanguage("en");
         }
 
-        nameLbl.setText(benutzername);
+        nameLbl.setText(username);
 
-        if (guthaben == 0) {
-            alertLbl.setText(resBoundle.getString("nocredit"));
+        if (balance == 0) {
+            alertLbl.setText(resBundle.getString("nocredit"));
             betTxtField.setMouseTransparent(true);
             betTxtField.setFocusTraversable(false);
             setzenBtn.setMouseTransparent(true);
@@ -135,41 +116,34 @@ public class BaccaraController implements Initializable {
     }
 
     //<editor-fold defaultstate="collapsed" desc="FXML Buttons">
-    /**
-     * Nachdem der Spieler TIE, BANKER oder PLAYER ausgewählt hat, und die
-     * Validierung richtig ist, wird das Betrag gesetzt, aus dem Konto abgezogen
-     * und die chips werden angezeigt.
-     *
-     */
-    @FXML
-    private void betragSetzen(ActionEvent event) throws IOException {
+    private void setBet(ActionEvent event) throws IOException {
 
         if (model.getIsPlayerBet() == false && model.getIsBankerBet() == false && model.getIsTieBet() == false) {
-            alertLbl.setText(resBoundle.getString("alert1"));
+            alertLbl.setText(resBundle.getString("alert1"));
         } else {
             try {
-                betrag = Integer.parseInt(betTxtField.getText());
-                model.setBetrag(betrag);
-                if (betrag > guthaben) {
-                    alertLbl.setText(resBoundle.getString("alert2"));
-                } else if (betrag < 0) {
-                    alertLbl.setText(resBoundle.getString("alert3"));
+                bet = Integer.parseInt(betTxtField.getText());
+                model.setBet(bet);
+                if (bet > balance) {
+                    alertLbl.setText(resBundle.getString("alert2"));
+                } else if (bet < 0) {
+                    alertLbl.setText(resBundle.getString("alert3"));
                 } else {
-                    player.setGuthaben(guthaben - betrag);
-                    guthabenLbl.setText(resBoundle.getString("money") + " " + String.valueOf(player.getGuthaben()));
-                    db.updateGuthaben(player.getGuthaben(), benutzername);
+                    player.setBalance(balance - bet);
+                    guthabenLbl.setText(resBundle.getString("money") + " " + String.valueOf(player.getBalance()));
+                    db.updateBalance(player.getBalance(), username);
                     betTxtField.setMouseTransparent(true);
                     setzenBtn.setMouseTransparent(true);
                     displayBet();
                     betBankerBtn.setDisable(true);
                     betTieBtn.setDisable(true);
                     betPlayerBtn.setDisable(true);
-                    alertLbl.setText(resBoundle.getString("alert4"));
+                    alertLbl.setText(resBundle.getString("alert4"));
                     isfirstClick = false;
 
                 }
             } catch (NumberFormatException ex) {
-                alertLbl.setText(resBoundle.getString("alert5"));
+                alertLbl.setText(resBundle.getString("alert5"));
             }
         }
     }
@@ -179,7 +153,7 @@ public class BaccaraController implements Initializable {
         displaySecondCard(1);
         isNewBankerCardNeeded = model.isnewBankerCard();
         if (isNewBankerCardNeeded == true) {
-            alertLbl.setText(resBoundle.getString("cardb"));
+            alertLbl.setText(resBundle.getString("cardb"));
             newBankerCardBtn.setDisable(false);
 
         } else {
@@ -188,15 +162,14 @@ public class BaccaraController implements Initializable {
 
     }
 
-    //Falls ein Betrag schon gesetzt wurde, werden die erste vier Karten gezogen, und ein meldung erscheinen ob 
     @FXML
-    private void zieheKarte(ActionEvent event) throws IOException {
+    private void drawCard(ActionEvent event) throws IOException {
         if (isfirstClick == true) {
-            alertLbl.setText(resBoundle.getString("takebet"));
+            alertLbl.setText(resBundle.getString("takebet"));
         } else {
 
             for (int i = 0; i < 4; i++) {
-                model.zieheKarte(i);
+                model.drawCard(i);
             }
             model.calculateCardSum();
             playerPointsLbl.setText(String.valueOf(model.getSumOfPlayerCards()));
@@ -214,12 +187,12 @@ public class BaccaraController implements Initializable {
                 if (model.getSumOfBankerCards() > 2) {
                     finishGame();
                 } else {
-                    alertLbl.setText(resBoundle.getString("cardb"));
+                    alertLbl.setText(resBundle.getString("cardb"));
                     newBankerCardBtn.setDisable(false);
                 }
 
             } else {
-                alertLbl.setText(resBoundle.getString("cardp"));
+                alertLbl.setText(resBundle.getString("cardp"));
                 newPlayerCardBtn.setDisable(false);
             }
         }
@@ -232,51 +205,44 @@ public class BaccaraController implements Initializable {
         finishGame();
     }
 
-    //Betrag auf Spieler wird gesetzt
     @FXML
     private void betPlayer(ActionEvent event) throws IOException {
         takeBet(true, false, false);
     }
 
-    //Betrag auf unentschieden wird gesetzt
     @FXML
     private void betTie(ActionEvent event) throws IOException {
         takeBet(false, true, false);
     }
 
-    //Betrag auf Dealer wird gesetzt
     @FXML
     private void betBanker(ActionEvent event) throws IOException {
         takeBet(false, false, true);
     }
 
-    //Falls es keine Betrag gesetzt wurde, wird das Spiel abgebrochen, ansonst wird ein Bestätigungsfenetr angezeigt
     @FXML
     private void zuruck(ActionEvent event) throws IOException {
-        if (betrag != 0) {
-            alertLbl2.setText(resBoundle.getString("alert6"));
-            alertLbl3.setText(resBoundle.getString("alert7"));
-            jaButton.setText(resBoundle.getString("apply"));
-            neinButton.setText(resBoundle.getString("cancel"));
+        if (bet != 0) {
+            alertLbl2.setText(resBundle.getString("alert6"));
+            alertLbl3.setText(resBundle.getString("alert7"));
+            jaButton.setText(resBundle.getString("apply"));
+            neinButton.setText(resBundle.getString("cancel"));
             alertPane.setVisible(true);
         } else {
             zuruckZumStart();
         }
     }
 
-    //Das Spiel wird abgebrochen 
     @FXML
     private void ja(ActionEvent event) throws IOException {
         zuruckZumStart();
     }
 
-    //Das Bestätigungsfenster wird zugemacht
     @FXML
     private void nein(ActionEvent event) throws IOException {
         alertPane.setVisible(false);
     }
 
-    //Mit dem Button wird das Spiel neu gestartet
     @FXML
     private void newGame(ActionEvent event) throws IOException {
         Stage stage = MainApp.getStage();
@@ -286,7 +252,6 @@ public class BaccaraController implements Initializable {
         stage.show();;
     }
 
-    //Das INFO wird geöffnet oder zugemacht
     @FXML
     private void openInformation(MouseEvent event) {
         if (isInfoVisible == false) {
@@ -297,7 +262,6 @@ public class BaccaraController implements Initializable {
 
     }
 
-    //Mit dem Button kann der Spieler zurück zur Übersichtseite wechseln
     private void zuruckZumStart() throws IOException {
         Stage stage = MainApp.getStage();
 
@@ -308,23 +272,21 @@ public class BaccaraController implements Initializable {
     }
 //</editor-fold>
 
-    //Es wird ausgegeben ob der Spieler oder Dealer gewonnen hat, oder ist der Spielstand unentschieden
     private void setWinnerAlert() {
         switch (model.getWinner()) {
             case 1:
-                alertLbl.setText(resBoundle.getString("wonp"));
+                alertLbl.setText(resBundle.getString("wonp"));
                 break;
             case 2:
-                alertLbl.setText(resBoundle.getString("wont"));
+                alertLbl.setText(resBundle.getString("wont"));
                 break;
             case 3:
-                alertLbl.setText(resBoundle.getString("wonb"));
+                alertLbl.setText(resBundle.getString("wonb"));
                 break;
             default:
         }
     }
 
-    //Auf dem ausgewälten Feld wird ein Chip erscheinen 
     private void takeBet(boolean player, boolean tie, boolean banker) {
         model.setIsPlayerBet(player);
         model.setIsTieBet(tie);
@@ -335,19 +297,17 @@ public class BaccaraController implements Initializable {
 
     }
 
-    //Die aktuelle Guthaben wird angezeigt und im Datenbank gespeichert
     private void updateGuthaben() {
-        betrag = model.calculateBet();
+        bet = model.calculateBet();
         if (model.getIsTieBet() == true) {
-            betrag *= 9;
+            bet *= 9;
         }
-        player.setGuthaben(player.getGuthaben() + betrag);
-        guthabenLbl.setText(resBoundle.getString("money") + " " + String.valueOf(player.getGuthaben()));
+        player.setBalance(player.getBalance() + bet);
+        guthabenLbl.setText(resBundle.getString("money") + " " + String.valueOf(player.getBalance()));
         displayBet();
-        db.updateGuthaben(player.getGuthaben(), player.getBenutzername());
+        db.updateBalance(player.getBalance(), player.getUsername());
 
     }
-//    Das Spiel wird beendet und der Spieler kann das Spiel neu starten
 
     private void finishGame() {
         model.whoIsWinner();
@@ -356,14 +316,13 @@ public class BaccaraController implements Initializable {
         if (isBetLost == true) {
             updateGuthaben();
         } else {
-            db.updateGuthaben(player.getGuthaben(), player.getBenutzername());
+            db.updateBalance(player.getBalance(), player.getUsername());
         }
 
         newGameBtn.setDisable(false);
         newGameBtn.setVisible(true);
     }
 
-    //Das INFO wird als sichtbar oder unsichtbar eingestellt
     public void switchInfoVisibility(boolean visibility) {
         infoImg1.setVisible(visibility);
         infoImg2.setVisible(visibility);
@@ -376,11 +335,10 @@ public class BaccaraController implements Initializable {
         isInfoVisible = visibility;
     }
 
-    //Die zweite Karte des Spielers oder Dealers wird angezeigt
     private void displaySecondCard(int player) {
         model.getImages().clear();
         model.getCardValues().clear();
-        model.zieheKarte(0);
+        model.drawCard(0);
         if (player == 1) {
             model.addPlayerToSum(0);
             playerPointsLbl.setText(String.valueOf(model.getSumOfPlayerCards()));
@@ -396,32 +354,32 @@ public class BaccaraController implements Initializable {
         }
     }
 
-    //Das Betrag wird angezeigt
     private void displayBet() {
         if (model.getIsBankerBet() == true) {
-            bankerbetragLbl.setText(String.valueOf(betrag));
+            bankerbetragLbl.setText(String.valueOf(bet));
             bankerbetragLbl.setVisible(true);
         }
         if (model.getIsPlayerBet() == true) {
-            playerbetragLbl.setText(String.valueOf(betrag));
+            playerbetragLbl.setText(String.valueOf(bet));
             playerbetragLbl.setVisible(true);
         }
         if (model.getIsTieBet() == true) {
-            tiebetragLbl.setText(String.valueOf(betrag));
+            tiebetragLbl.setText(String.valueOf(bet));
             tiebetragLbl.setVisible(true);
         }
     }
 
     private void loadLanguage(String lang) {
         locale = new Locale(lang);
-        resBoundle = ResourceBundle.getBundle("resources.properties.language", locale);
-        guthabenLbl.setText(resBoundle.getString("money") + " " + player.getGuthaben());
-        setBetLbl.setText(resBoundle.getString("bet2"));
-        setzenBtn.setText(resBoundle.getString("bet3"));
-        infoLbl1.setText(resBoundle.getString("bet1"));
-        infoLbl2.setText(resBoundle.getString("jeton"));
-        infoLbl3.setText(resBoundle.getString("card"));
-        zuruck.setText(resBoundle.getString("logout"));
-        newGameBtn.setText(resBoundle.getString("new"));
+        resBundle = ResourceBundle.getBundle("resources.properties.language", locale);
+        guthabenLbl.setText(resBundle.getString("money") + " " + player.getBalance());
+        setBetLbl.setText(resBundle.getString("bet2"));
+        setzenBtn.setText(resBundle.getString("bet3"));
+        infoLbl1.setText(resBundle.getString("bet1"));
+        infoLbl2.setText(resBundle.getString("jeton"));
+        infoLbl3.setText(resBundle.getString("card"));
+        zuruck.setText(resBundle.getString("logout"));
+        newGameBtn.setText(resBundle.getString("new"));
     }
+
 }

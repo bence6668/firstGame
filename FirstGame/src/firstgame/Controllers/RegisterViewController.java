@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 
 public class RegisterViewController implements Initializable {
 
+//<editor-fold defaultstate="collapsed" desc="FXML-Items">
     @FXML
     private TextField txtUname;
     @FXML
@@ -46,18 +47,18 @@ public class RegisterViewController implements Initializable {
     @FXML
     private Label lblName2;
     @FXML
-    private Label lblName211;
-    @FXML
     private TextField txtPass2;
     @FXML
     private Label lblPass2;
     @FXML
     private Label lblAlert;
-
+//</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="Variables">
     private LanguagePack langPack;
-    private ResourceBundle resBoundle;
+    private ResourceBundle resBundle;
     private Locale locale;
     private DatabaseConnection db;
+//</editor-fold>
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -93,33 +94,33 @@ public class RegisterViewController implements Initializable {
 
     private void loadLanguage(String lang) {
         locale = new Locale(lang);
-        resBoundle = ResourceBundle.getBundle("resources.properties.language", locale);
-        lblAccount.setText(resBoundle.getString("account"));
-        lblName1.setText(resBoundle.getString("name1"));
-        lblName2.setText(resBoundle.getString("name2"));
-        lblUname.setText(resBoundle.getString("username"));
-        lblPass.setText(resBoundle.getString("password"));
-        lblPass2.setText(resBoundle.getString("password2"));
-        regBtn.setText(resBoundle.getString("reg"));
-        logBtn.setText(resBoundle.getString("log"));
+        resBundle = ResourceBundle.getBundle("resources.properties.language", locale);
+        lblAccount.setText(resBundle.getString("account"));
+        lblName1.setText(resBundle.getString("name1"));
+        lblName2.setText(resBundle.getString("name2"));
+        lblUname.setText(resBundle.getString("username"));
+        lblPass.setText(resBundle.getString("password"));
+        lblPass2.setText(resBundle.getString("password2"));
+        regBtn.setText(resBundle.getString("reg"));
+        logBtn.setText(resBundle.getString("log"));
 
     }
 
     @FXML
     private void register(ActionEvent event) {
         if (txtName1.getText().equals("") || txtName2.getText().equals("") || txtMail.getText().equals("") || txtUname.getText().equals("") || txtPass1.getText().equals("")) {
-            lblAlert.setText(resBoundle.getString("fieldcheck"));
+            lblAlert.setText(resBundle.getString("fieldcheck"));
         } else if (!txtPass1.getText().equals(txtPass2.getText())) {
-            lblAlert.setText(resBoundle.getString("passmatch"));
+            lblAlert.setText(resBundle.getString("passmatch"));
         } else {
             db.addUser(txtName1.getText(), txtName2.getText(), txtMail.getText(), txtUname.getText(), txtPass1.getText());
-            lblAlert.setText(resBoundle.getString("successfull"));
+            lblAlert.setText(resBundle.getString("successfull"));
             freezeWindow();
         }
 
     }
-    
-    private void freezeWindow(){
+
+    private void freezeWindow() {
         txtName1.setMouseTransparent(true);
         txtName2.setMouseTransparent(true);
         txtPass1.setMouseTransparent(true);
@@ -135,7 +136,7 @@ public class RegisterViewController implements Initializable {
 
         } else {
             if (txtPass1.getLength() < 8) {
-                lblAlert.setText(resBoundle.getString("strength"));
+                lblAlert.setText(resBundle.getString("strength"));
             } else {
                 lblAlert.setText("");
             }
@@ -149,7 +150,7 @@ public class RegisterViewController implements Initializable {
 
         } else {
             if (!txtMail.getText().contains("@") || !txtMail.getText().contains(".")) {
-                lblAlert.setText(resBoundle.getString("mailcheck"));
+                lblAlert.setText(resBundle.getString("mailcheck"));
             } else {
                 lblAlert.setText("");
             }

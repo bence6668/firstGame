@@ -33,7 +33,7 @@
                         <Insets />
                      </opaqueInsets>
                   </TextField>
-                  <Button id="setzen" fx:id="setzenBtn" mnemonicParsing="false" onAction="#betragSetzen" styleClass="buttton" stylesheets="@../../resources/properties/style.css" text="setzen" textFill="WHITE">
+                  <Button id="setzen" fx:id="setzenBtn" mnemonicParsing="false" onAction="#setBet" styleClass="buttton" stylesheets="@../../resources/properties/style.css" text="setzen" textFill="WHITE">
                      <HBox.margin>
                         <Insets left="20.0" top="11.0" />
                      </HBox.margin>
@@ -81,7 +81,7 @@
       <ImageView id="card1_player" fx:id="card1_playerImg" fitHeight="137.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="148.0" />
       <ImageView id="card2_player" fx:id="card2_playerImg" fitHeight="137.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="148.0" />
       <ImageView id="card3_player" fx:id="card3_playerImg" fitHeight="137.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="148.0" />
-      <Button id="ziehebtn" fx:id="zieheBtn" mnemonicParsing="false" onAction="#zieheKarte" opacity="0.0" prefHeight="126.0" prefWidth="122.0" text="Button" AnchorPane.rightAnchor="50.0" />
+      <Button id="ziehebtn" fx:id="zieheBtn" mnemonicParsing="false" onAction="#drawCard" opacity="0.0" prefHeight="126.0" prefWidth="122.0" text="Button" AnchorPane.rightAnchor="50.0" />
       <Button id="banker" fx:id="betBankerBtn" layoutY="313.0" mnemonicParsing="false" onAction="#betBanker" opacity="0.0" prefHeight="118.0" prefWidth="110.0" text="Button" AnchorPane.leftAnchor="220.0" AnchorPane.topAnchor="313.0" />
       <Button fx:id="betTieBtn" mnemonicParsing="false" onAction="#betTie" opacity="0.0" prefHeight="118.0" prefWidth="110.0" text="Button" AnchorPane.leftAnchor="370.0" AnchorPane.topAnchor="338.0" />
       <Button fx:id="betPlayerBtn" mnemonicParsing="false" onAction="#betPlayer" opacity="0.0" prefHeight="118.0" prefWidth="110.0" text="Button" AnchorPane.rightAnchor="220.0" AnchorPane.topAnchor="313.0" />
